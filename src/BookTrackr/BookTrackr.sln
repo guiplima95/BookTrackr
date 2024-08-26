@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{305C00B4-B2A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A7A9B84A-367D-475E-B2A0-A86118519E8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.API", "..\Book.API\Book.API.csproj", "{25D2C864-0253-4C9B-A42A-AAA1F60CF114}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.API", ".\Services\Book.API\Book.API.csproj", "{25D2C864-0253-4C9B-A42A-AAA1F60CF114}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reads.API", "..\Reads.API\Reads.API.csproj", "{6D34E4C5-903A-457B-A6BC-67F478470AA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reads.API", ".\Services\Reads.API\Reads.API.csproj", "{6D34E4C5-903A-457B-A6BC-67F478470AA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
