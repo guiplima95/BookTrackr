@@ -1,4 +1,4 @@
-﻿namespace Book.API.Domain.SeedWork;
+﻿namespace Book.API.Domain.Abstractions;
 
 public abstract class Entity
 {

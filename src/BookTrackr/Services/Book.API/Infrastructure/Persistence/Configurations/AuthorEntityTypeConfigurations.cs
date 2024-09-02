@@ -1,4 +1,5 @@
-﻿using Book.API.Domain.AuthorAggregate;
+﻿using Book.API.Domain.Entities.AuthorAggregate;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,4 +1,4 @@
-﻿using Book.API.Domain.GenreAggregate;
+﻿using Book.API.Domain.Entities.GenreAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

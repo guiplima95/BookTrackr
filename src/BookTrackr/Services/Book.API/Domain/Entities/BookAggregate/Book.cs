@@ -1,6 +1,6 @@
-﻿using Book.API.Domain.SeedWork;
+﻿using Book.API.Domain.Abstractions;
 
-namespace Book.API.Domain.BookAggregate;
+namespace Book.API.Domain.Entities.BookAggregate;
 
 public class Book : Entity
 {

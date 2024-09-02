@@ -13,6 +13,7 @@
   </ItemGroup>
 
 	<ItemGroup Label="Logging">
+		<PackageReference Include="MediatR" Version="12.4.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
 		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
 		<PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
@@ -45,9 +46,8 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\" />
-    <Folder Include="Infrastructure\Persistence\Repositories\" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Application\Users\" />
+	</ItemGroup>
 
 </Project>

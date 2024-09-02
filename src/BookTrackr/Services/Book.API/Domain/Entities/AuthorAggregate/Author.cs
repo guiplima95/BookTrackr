@@ -1,6 +1,6 @@
-﻿using Book.API.Domain.SeedWork;
+﻿using Book.API.Domain.Abstractions;
 
-namespace Book.API.Domain.AuthorAggregate;
+namespace Book.API.Domain.Entities.AuthorAggregate;
 
 public class Author(
     string? born,

@@ -1,4 +1,4 @@
-﻿using Book.API.Domain.SeedWork;
+﻿using Book.API.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

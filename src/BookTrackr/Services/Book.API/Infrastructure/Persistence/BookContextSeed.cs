@@ -1,7 +1,7 @@
-﻿using Book.API.Domain.AuthorAggregate;
-using Book.API.Domain.BookAggregate;
-using Book.API.Domain.GenreAggregate;
-using Book.API.Domain.UserAggregate;
+﻿using Book.API.Domain.Entities.AuthorAggregate;
+using Book.API.Domain.Entities.BookAggregate;
+using Book.API.Domain.Entities.GenreAggregate;
+using Book.API.Domain.Entities.UserAggregate;
 using Book.API.Infrastructure.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +44,7 @@ public class BookContextSeed
     {
         if (!await context.Users.AnyAsync())
         {
-            var userCreated = Domain.UserAggregate.User.Create(
+            var userCreated = User.Create(
                 address: new Address("Av. Professor Djalma Guimaraes, 2275", "Santa Luzia", "Minas Gerais", "33170010", "Brazil"),
                 cpf: new CPF("111111996601"),
                 email: new Email("guilhermelucas.contato@gmail.com"),
@@ -82,11 +82,11 @@ public class BookContextSeed
             string queryUser = $"SELECT * FROM dbo.Users WHERE Name = 'Guilherme Lima'";
             string queryGenrer = $"SELECT * FROM dbo.Genres WHERE Description = 'Technology'";
 
-            var user = await context.Users.FromSqlRaw<Domain.UserAggregate.User>(queryUser).FirstOrDefaultAsync();
+            var user = await context.Users.FromSqlRaw<User>(queryUser).FirstOrDefaultAsync();
             var genre = await context.Genres.FromSqlRaw<Genre>(queryGenrer).FirstOrDefaultAsync();
             var author = await context.Authors.FromSqlRaw<Author>(queryAuthor).FirstOrDefaultAsync();
 
-            Domain.BookAggregate.Book bookCreated = new(
+            Domain.Entities.BookAggregate.Book bookCreated = new(
                 title: "Clean Code: A Handbook of Agile Software Craftsmanship",
                 description: "Even bad code can function. But if code isn’t clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. But it doesn’t have to be that way.",
                 edition: new Edition(2, "2nd edition"),

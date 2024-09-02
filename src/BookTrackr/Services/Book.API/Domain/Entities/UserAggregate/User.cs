@@ -1,7 +1,7 @@
-﻿using Book.API.Domain.AuthorAggregate;
-using Book.API.Domain.SeedWork;
+﻿using Book.API.Domain.Abstractions;
+using Book.API.Domain.Entities.AuthorAggregate;
 
-namespace Book.API.Domain.UserAggregate;
+namespace Book.API.Domain.Entities.UserAggregate;
 
 public class User : Entity
 {

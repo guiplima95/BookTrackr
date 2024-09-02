@@ -1,14 +1,14 @@
-﻿using Book.API.Domain.AuthorAggregate;
-using Book.API.Domain.GenreAggregate;
-using Book.API.Domain.UserAggregate;
+﻿using Book.API.Domain.Entities.AuthorAggregate;
+using Book.API.Domain.Entities.GenreAggregate;
+using Book.API.Domain.Entities.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Book.API.Infrastructure.Persistence.Configurations;
 
-public class BookEntityTypeConfigurations : IEntityTypeConfiguration<Domain.BookAggregate.Book>
+public class BookEntityTypeConfigurations : IEntityTypeConfiguration<Domain.Entities.BookAggregate.Book>
 {
-    public void Configure(EntityTypeBuilder<Domain.BookAggregate.Book> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.BookAggregate.Book> builder)
     {
         builder
            .HasKey(t => t.Id)

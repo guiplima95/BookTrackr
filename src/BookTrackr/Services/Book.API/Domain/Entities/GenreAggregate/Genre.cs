@@ -1,6 +1,6 @@
-﻿using Book.API.Domain.SeedWork;
+﻿using Book.API.Domain.Abstractions;
 
-namespace Book.API.Domain.GenreAggregate;
+namespace Book.API.Domain.Entities.GenreAggregate;
 
 public class Genre(string description) : Entity
 {

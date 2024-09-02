@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Book.API.Domain.SeedWork;
+namespace Book.API.Domain.Abstractions;
 
 public abstract class Enumeration : IComparable
 {

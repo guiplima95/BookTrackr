@@ -1,6 +1,6 @@
-using Book.API.Domain.AuthorAggregate;
-using Book.API.Domain.GenreAggregate;
-using Book.API.Domain.UserAggregate;
+using Book.API.Domain.Entities.AuthorAggregate;
+using Book.API.Domain.Entities.GenreAggregate;
+using Book.API.Domain.Entities.UserAggregate;
 using Book.API.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +8,7 @@ public class BookContext(DbContextOptions<BookContext> options) : DbContext(opti
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Author> Authors { get; set; }
-    public DbSet<Book.API.Domain.BookAggregate.Book> Books { get; set; }
+    public DbSet<Book.API.Domain.Entities.BookAggregate.Book> Books { get; set; }
     public DbSet<Genre> Genres { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
