@@ -8,4 +8,9 @@ public record ConflictError(string Code, string Description, ErrorType Type) : E
         "Users.EmailNotUnique",
         "There is already a user with this email.",
         ErrorType.Conflict);
+
+    public static readonly ConflictError ISBNNotUnique = new(
+        "Books.BookNotUnique",
+        "There is already a book with this isbn.",
+        ErrorType.Conflict);
 }

@@ -1,7 +1,7 @@
 ﻿using Book.API.Domain.Abstractions;
 using MediatR;
 
-namespace Book.API.Application.Abstractions;
+namespace Book.API.Application.Abstractions.Menssaging;
 
 public interface ICommandHandler<TCommand> : IRequestHandler<TCommand, Result>
     where TCommand : ICommand;

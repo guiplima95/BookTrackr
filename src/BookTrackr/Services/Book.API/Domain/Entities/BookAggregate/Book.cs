@@ -23,7 +23,7 @@ public class Book : Entity
         string publisher,
         Guid genreId,
         short publishedYear,
-        short pageAmount,
+        int pageAmount,
         decimal averageRating,
         Guid userId)
     {
@@ -48,7 +48,7 @@ public class Book : Entity
     public Guid GenreId { get; private set; }
     public string Publisher { get; private set; }
     public short PublishedYear { get; private set; }
-    public short PageAmount { get; private set; }
+    public int PageAmount { get; private set; }
     public decimal AverageRating { get; private set; }
     public Guid UserId { get; private set; }
 }
