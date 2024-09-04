@@ -1,7 +1,17 @@
-using Book.API;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using Asp.Versioning.Builder;
+using Book.API.Application.Extensions;
 using Book.API.Converters;
+using Book.API.Endpoints.OpenApi;
 using Book.API.Extensions;
+using Book.API.Infrastructure;
+using Book.API.Infrastructure.Extensions;
 using Book.API.Infrastructure.Persistence;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -26,9 +36,52 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new DateTimeOffsetConverter());
 });
 
-// TODO Serilog configuration:
+// Add Serilog:
+builder.Host.UseSerilog((context, loggerConfig) =>
+    loggerConfig.ReadFrom.Configuration(context.Configuration));
 
-var app = builder.Build();
+// Add Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Add DI:
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
+
+// Add GlobalExceptionHandler:
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+// Add Versioning:
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+// Add Endpoints:
+builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
+// Add Configuration OpenApi with Swagger:
+builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+
+WebApplication app = builder.Build();
+
+ApiVersionSet apiVersionSet = app.NewApiVersionSet()
+    .HasApiVersion(new ApiVersion(1))
+    .ReportApiVersions()
+    .Build();
+
+RouteGroupBuilder versionedGroup = app
+    .MapGroup("api/v{version:apiVersion}")
+    .WithApiVersionSet(apiVersionSet);
+
+app.MapEndpoints(versionedGroup);
 
 app.MigrateDbContext<BookContext>((context, services) =>
 {
@@ -46,35 +99,34 @@ app.UseCors("CorsPolicy");
 if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    app.UseSwaggerUI(options =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book.API V1");
-        c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+        IReadOnlyList<ApiVersionDescription> descriptions = app.DescribeApiVersions();
+
+        foreach (ApiVersionDescription description in descriptions)
+        {
+            string url = $"/swagger/{description.GroupName}/swagger.json";
+            string name = description.GroupName.ToUpperInvariant();
+
+            options.SwaggerEndpoint(url, name);
+        }
     });
 }
 
 app.UseHttpsRedirection();
 
+// Map HealthChecks
+app.MapHealthChecks("health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.UseStaticFiles();
+
 app.UseAuthorization();
 
-var summaries = new[]
-{
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+app.UseSerilogRequestLogging();
 
-app.MapGet("/weatherforecast", (HttpContext httpContext) =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        })
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.UseExceptionHandler();
 
 await app.RunAsync();

@@ -21,7 +21,7 @@ namespace Book.API.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Book.API.Domain.AuthorAggregate.Author", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.AuthorAggregate.Author", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -53,7 +53,7 @@ namespace Book.API.Infrastructure.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Book.API.Domain.BookAggregate.Book", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.BookAggregate.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -79,8 +79,8 @@ namespace Book.API.Infrastructure.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
 
-                    b.Property<short>("PageAmount")
-                        .HasColumnType("smallint");
+                    b.Property<int>("PageAmount")
+                        .HasColumnType("int");
 
                     b.Property<short>("PublishedYear")
                         .HasColumnType("smallint");
@@ -112,7 +112,7 @@ namespace Book.API.Infrastructure.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Book.API.Domain.GenreAggregate.Genre", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.GenreAggregate.Genre", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -131,7 +131,7 @@ namespace Book.API.Infrastructure.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("Book.API.Domain.UserAggregate.User", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -165,30 +165,30 @@ namespace Book.API.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Book.API.Domain.BookAggregate.Book", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.BookAggregate.Book", b =>
                 {
-                    b.HasOne("Book.API.Domain.AuthorAggregate.Author", null)
+                    b.HasOne("Book.API.Domain.Entities.AuthorAggregate.Author", null)
                         .WithMany("Books")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Book_Author");
 
-                    b.HasOne("Book.API.Domain.GenreAggregate.Genre", null)
+                    b.HasOne("Book.API.Domain.Entities.GenreAggregate.Genre", null)
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Book_Genre");
 
-                    b.HasOne("Book.API.Domain.UserAggregate.User", null)
+                    b.HasOne("Book.API.Domain.Entities.UserAggregate.User", null)
                         .WithMany("Books")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Book_User");
 
-                    b.OwnsOne("Book.API.Domain.BookAggregate.Edition", "Edition", b1 =>
+                    b.OwnsOne("Book.API.Domain.Entities.BookAggregate.Edition", "Edition", b1 =>
                         {
                             b1.Property<Guid>("BookId")
                                 .ValueGeneratedOnAdd()
@@ -214,9 +214,9 @@ namespace Book.API.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Book.API.Domain.UserAggregate.User", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.UserAggregate.User", b =>
                 {
-                    b.OwnsOne("Book.API.Domain.UserAggregate.Address", "Address", b1 =>
+                    b.OwnsOne("Book.API.Domain.Entities.UserAggregate.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .ValueGeneratedOnAdd()
@@ -259,17 +259,17 @@ namespace Book.API.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Book.API.Domain.AuthorAggregate.Author", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.AuthorAggregate.Author", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Book.API.Domain.GenreAggregate.Genre", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.GenreAggregate.Genre", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Book.API.Domain.UserAggregate.User", b =>
+            modelBuilder.Entity("Book.API.Domain.Entities.UserAggregate.User", b =>
                 {
                     b.Navigation("Books");
                 });

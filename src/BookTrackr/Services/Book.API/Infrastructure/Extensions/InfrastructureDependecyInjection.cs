@@ -21,14 +21,29 @@ public static class InfrastructureDependecyInjection
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-        string? connectionString = configuration.GetConnectionString("Database");
+        string? connectionString = configuration.GetConnectionString("SqlServer");
 
-        services.AddSingleton<IDbConnectionFactory>(_ =>
+        ArgumentNullException.ThrowIfNull(connectionString, nameof(connectionString));
+
+        string redisConnectionString = configuration.GetConnectionString("Redis")!;
+
+        // Dapper with DbConnectionFactory: SqlConnection
+        services.AddScoped<IDbConnectionFactory>(_ =>
             new DbConnectionFactory(new SqlConnection(connectionString)));
+
+        // Redis:
+        services.AddStackExchangeRedisCache(options =>
+           options.Configuration = redisConnectionString);
 
         // DB Context:
         services.AddDbContext<BookContext>(
             (sp, options) => options.UseSqlServer(connectionString));
+
+        // HealthChecks:
+        services.AddHealthChecks()
+            .AddSqlServer(connectionString)
+            .AddRedis(redisConnectionString)
+            .AddDbContextCheck<BookContext>();
 
         // Repositories:
         services.AddScoped<IUserRepository, UserRepository>();

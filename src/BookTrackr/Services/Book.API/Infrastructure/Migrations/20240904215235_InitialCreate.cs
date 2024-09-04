@@ -75,7 +75,7 @@ namespace Book.API.Infrastructure.Migrations
                     GenreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Publisher = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     PublishedYear = table.Column<short>(type: "smallint", nullable: false),
-                    PageAmount = table.Column<short>(type: "smallint", nullable: false),
+                    PageAmount = table.Column<int>(type: "int", nullable: false),
                     AverageRating = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

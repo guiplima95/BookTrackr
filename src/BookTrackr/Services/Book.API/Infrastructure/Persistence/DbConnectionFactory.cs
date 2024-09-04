@@ -6,9 +6,9 @@ namespace Book.API.Infrastructure.Persistence;
 
 internal sealed class DbConnectionFactory(SqlConnection connection) : IDbConnectionFactory
 {
-    public async Task<IDbConnection> GetOpenConnectionAsync()
+    public IDbConnection GetOpenConnection()
     {
-        await connection.OpenAsync();
+        connection.Open();
 
         return connection;
     }
