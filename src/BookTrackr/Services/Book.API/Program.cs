@@ -7,6 +7,7 @@ using Book.API.Endpoints.OpenApi;
 using Book.API.Extensions;
 using Book.API.Infrastructure;
 using Book.API.Infrastructure.Extensions;
+using Book.API.Infrastructure.OutputCache;
 using Book.API.Infrastructure.Persistence;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -67,6 +68,13 @@ builder.Services.AddApiVersioning(options =>
 // Add Endpoints:
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(b => b.AddPolicy<CustomPolicy>().SetCacheKeyPrefix("custom-"), true);
+
+    options.AddBasePolicy(b => b.Tag("all"), true);
+});
+
 // Add Configuration OpenApi with Swagger:
 builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
 
@@ -121,12 +129,12 @@ app.MapHealthChecks("health", new HealthCheckOptions
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
-app.UseStaticFiles();
-
 app.UseAuthorization();
 
 app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
+
+app.UseOutputCache();
 
 await app.RunAsync();

@@ -1,9 +1,8 @@
-﻿using Book.API.Application.Abstractions.Menssaging;
-using Book.API.Domain.Entities.BookAggregate;
+﻿using Book.API.Domain.Entities.BookAggregate;
 
 namespace Book.API.Application.Books.Create;
 
-public record CreateBookCommand(
+public record CreateBookRequest(
     string Title,
     string Description,
     Edition Edition,
@@ -13,4 +12,4 @@ public record CreateBookCommand(
     int PageAmount,
     Guid UserId,
     Guid AuthorId,
-    Guid GenreId) : ICommand<Guid>;
+    Guid GenreId);

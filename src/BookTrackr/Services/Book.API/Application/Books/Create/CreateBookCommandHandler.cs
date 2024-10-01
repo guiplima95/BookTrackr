@@ -15,26 +15,26 @@ public sealed class CreateBookCommandHandler(
     IUserRepository userRepository,
     IGenreRepository genreRepository,
     IAuthorRepository authorRepository,
-    IBookRepository bookRepository) : ICommandHandler<CreateBookCommand>
+    IBookRepository bookRepository) : ICommandHandler<CreateBookCommand, Guid>
 {
-    public async Task<Result> Handle(CreateBookCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
         User? user = await userRepository.GetByIdAsync(request.UserId, cancellationToken);
         if (user is null)
         {
-            return Result.Failure(NotFoundError.UserNotFound);
+            return Result.Failure<Guid>(NotFoundError.UserNotFound);
         }
 
         Genre? genre = await genreRepository.GetByIdAsync(request.GenreId, cancellationToken);
         if (genre is null)
         {
-            return Result.Failure(NotFoundError.GenreNotFound);
+            return Result.Failure<Guid>(NotFoundError.GenreNotFound);
         }
 
         Author? author = await authorRepository.GetByIdAsync(request.GenreId, cancellationToken);
         if (author is null)
         {
-            return Result.Failure(NotFoundError.AuthorNotFound);
+            return Result.Failure<Guid>(NotFoundError.AuthorNotFound);
         }
 
         bool bookAlreadyExists = await bookRepository
@@ -42,7 +42,7 @@ public sealed class CreateBookCommandHandler(
 
         if (bookAlreadyExists)
         {
-            return Result.Failure(ConflictError.ISBNNotUnique);
+            return Result.Failure<Guid>(ConflictError.ISBNNotUnique);
         }
 
         BookEntity book = new(
@@ -60,6 +60,6 @@ public sealed class CreateBookCommandHandler(
 
         await bookRepository.AddAsync(book, cancellationToken);
 
-        return Result.Success();
+        return Result.Success(book.Id);
     }
 }
